@@ -32,9 +32,11 @@ const AppProvider = ({children}) => {
       fetchMeals(allMealsUrl)
     },[]);
     
-  return <AppContext.Provider value={{loading, meals}}>
+  return (
+    <AppContext.Provider value={{loading, meals}}>
     {children}
   </AppContext.Provider> 
+  ) 
 };
 
 // This is used to wrap our components with useContext but also AppContext !
