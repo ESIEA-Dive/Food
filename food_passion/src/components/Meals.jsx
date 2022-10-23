@@ -6,7 +6,7 @@ import { BsHandThumbsUp } from 'react-icons/bs'
 
 const Meals = () => {
 
-  const {loading, meals} = useGlobalContext();
+  const {loading, meals, select} = useGlobalContext();
 
   if(loading) {
     return <section className='section'>
@@ -25,7 +25,7 @@ const Meals = () => {
         const { idMeal, strMeal: title, strMealThumb: image } = singleMeal; //Call the value we are gonna use and give alias to be simple
 
         return <div key={idMeal} className='single-meal'>
-          <img src={image} className='img' />
+          <img src={image} className='img' onClick={() => select(idMeal)} /> 
           <footer>
             <h5>{title}</h5>
             <button className='like-btn'><BsHandThumbsUp /></button>
@@ -39,3 +39,6 @@ const Meals = () => {
 };
 
 export default Meals;
+
+// onClick={select(idMeal)} This is not the right way to do it because you invoc it right away
+// You need () => select(idMeal) so it works on click
