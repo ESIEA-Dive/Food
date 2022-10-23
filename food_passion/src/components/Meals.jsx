@@ -2,6 +2,8 @@
 // import { AppContext } from '../context'; This is the right one
 import { useGlobalContext } from '../context';
 import { BsHandThumbsUp } from 'react-icons/bs'
+
+
 const Meals = () => {
 
   const {loading, meals} = useGlobalContext();

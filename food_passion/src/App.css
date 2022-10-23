@@ -112,7 +112,7 @@
 /* Search */
 
 .search-container{
-  height: 5px;
+  height: 5rem;
   background: var(--white);
   display: flex;
   align-items: center;
