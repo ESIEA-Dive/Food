@@ -16,6 +16,21 @@ const AppProvider = ({children}) => {
   const [modal, setModal] = useState(false);
   const [selected, setSelected] = useState(null);
 
+  const [favorites, setFavorites] = useState([]);
+
+  const addToFav = (idMeal) => {
+    const meal = meals.find((meal) => meal.idMeal === idMeal);
+    const alreadyFav = favorites.find((meal) => meal.idMeal === meal);
+    if (alreadyFav) return 
+    const updatedFav = [...favorites, meal]
+    setFavorites(updatedFav);
+  }
+
+  const removeFav = (idMeal) => {
+    const updatedFav = favorites.filter((meal) => meal.idMeal !== idMeal);
+    setFavorites(updatedFav);
+  }
+
   const fetchMeals = async (url) =>   {
     setLoading(true)
     try {
@@ -57,7 +72,8 @@ const AppProvider = ({children}) => {
     } , [search]);
 
   return (
-    <AppContext.Provider value={{ loading, meals, setSearch, fetchRandomMeals, modal, select , selected, deselect}}>
+    <AppContext.Provider value={{ loading, meals, setSearch, fetchRandomMeals, 
+    modal, select , selected, deselect, addToFav, removeFav }}>
     {children}
   </AppContext.Provider> 
   ) 
@@ -69,6 +85,17 @@ export const useGlobalContext = () => {
 }
 
 export { AppContext, AppProvider };
+
+
+
+
+
+
+
+
+
+
+
 
 
 // 2 ème méthode : BEST ONE out of this 2  ! 
