@@ -7,6 +7,19 @@ const AppContext = React.createContext()
 const allMealsUrl = 'https://www.themealdb.com/api/json/v1/1/search.php?s=';
 const randomMeal = 'https://www.themealdb.com/api/json/v1/1/random.php';
 
+//1er we get the item (l12), then we parsed it back into array l14 and it doesn't exist just empty array and then we invoc this function
+// into useState favorites/setFavorites
+const getFavFromLocal = () => {
+  let favorites = localStorage.getItem('favorites');
+  if (favorites) {
+    favorites = JSON.parse(localStorage.getItem('favorites'))
+  }
+  else {
+    favorites = []
+  }
+  return favorites
+}
+
 const AppProvider = ({children}) => { 
   
   const [meals, setMeals] = useState([]);
@@ -16,19 +29,24 @@ const AppProvider = ({children}) => {
   const [modal, setModal] = useState(false);
   const [selected, setSelected] = useState(null);
 
-  const [favorites, setFavorites] = useState([]);
+const [favorites, setFavorites] = useState(getFavFromLocal());
 
+ 
+
+  //Here with the localStorage we 
   const addToFav = (idMeal) => {
     const meal = meals.find((meal) => meal.idMeal === idMeal);
-    const alreadyFav = favorites.find((meal) => meal.idMeal === meal);
+    const alreadyFav = favorites.find((meal) => meal.idMeal === idMeal);
     if (alreadyFav) return 
     const updatedFav = [...favorites, meal]
     setFavorites(updatedFav);
+    localStorage.setItem('favorites', JSON.stringify(updatedFav));
   }
-
+  // This remove the favorite by excluding the meals with the id Matchning
   const removeFav = (idMeal) => {
     const updatedFav = favorites.filter((meal) => meal.idMeal !== idMeal);
     setFavorites(updatedFav);
+    localStorage.setItem('favorites', JSON.stringify(updatedFav));
   }
 
   const fetchMeals = async (url) =>   {
@@ -50,10 +68,14 @@ const AppProvider = ({children}) => {
       setModal(false)
     }
 
-    const select = (idMeal) => {
+    //We added a logic to fix the problem of not selecting the favorite on different pages. 
+    const select = (idMeal, favoriteMeal) => {
       let meal;
+      if (favoriteMeal){
+      meal = favorites.find((meal) => meal.idMeal === idMeal);
+      } else {
       meal = meals.find((meal) => meal.idMeal === idMeal);
-      console.log(meal);
+      }
       setSelected(meal);
       setModal(true);
     }
@@ -73,7 +95,7 @@ const AppProvider = ({children}) => {
 
   return (
     <AppContext.Provider value={{ loading, meals, setSearch, fetchRandomMeals, 
-    modal, select , selected, deselect, addToFav, removeFav }}>
+    modal, select , selected, deselect, addToFav, removeFav, favorites }}>
     {children}
   </AppContext.Provider> 
   ) 

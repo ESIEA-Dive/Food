@@ -6,12 +6,12 @@ import { useGlobalContext } from './context';
 
 function App() {
 
-  const { modal } = useGlobalContext();
+  const { modal, favorites } = useGlobalContext();
 
   return (
     <div className="App">
       <Search />
-      {/* <Favorite /> */}
+      { favorites.length > 0 && <Favorite /> } 
       <Meals />
       {modal && <Modal />} 
     </div>
@@ -19,3 +19,7 @@ function App() {
 }
 
 export default App;
+
+// for modal and favorites :
+// This only shows the favorite when the length of the array favorites is > 0
+// This only show when the modal is true
